@@ -28,7 +28,7 @@ CMAKE_BUILD_TYPE:STRING=Release
 CMAKE_COLOR_MAKEFILE:BOOL=ON
 
 //CUDA compiler
-CMAKE_CUDA_COMPILER:STRING=/opt/cuda/bin/nvcc
+CMAKE_CUDA_COMPILER:FILEPATH=/opt/cuda/bin/nvcc
 
 //Flags used by the CUDA compiler during all build types.
 CMAKE_CUDA_FLAGS:STRING=
@@ -46,7 +46,7 @@ CMAKE_CUDA_FLAGS_RELEASE:STRING=-O3 -DNDEBUG
 CMAKE_CUDA_FLAGS_RELWITHDEBINFO:STRING=-O2 -g -DNDEBUG
 
 //CXX compiler
-CMAKE_CXX_COMPILER:STRING=/usr/bin/c++
+CMAKE_CXX_COMPILER:FILEPATH=/usr/bin/c++
 
 //A wrapper around 'ar' adding the appropriate '--plugin' option
 // for the GCC compiler
@@ -203,9 +203,6 @@ CMAKE_STRIP:FILEPATH=/usr/bin/strip
 // during the make.  This is useful for debugging only. With Visual
 // Studio IDE projects all commands are done without /nologo.
 CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
-
-//The directory containing a CMake configuration file for CUB.
-CUB_DIR:PATH=/opt/cuda/lib64/cmake/cub
 
 //Value Computed by CMake
 CUDA-RTX-template_BINARY_DIR:STATIC=/home/cristobal/temporal/RTX-CUDA-template/build
@@ -408,35 +405,11 @@ CUDA_nvrtc_LIBRARY:FILEPATH=/opt/cuda/lib64/libnvrtc.so
 //Path to Optix installation.
 OPTIX_HOME:PATH=/opt/NVIDIA-OptiX-SDK-7.5.0-linux64-x86_64
 
-//CXX compiler flags for OpenMP parallelization
-OpenMP_CXX_FLAGS:STRING=-fopenmp
-
-//CXX compiler libraries for OpenMP parallelization
-OpenMP_CXX_LIB_NAMES:STRING=gomp;pthread
-
-//Path to the gomp library for OpenMP
-OpenMP_gomp_LIBRARY:FILEPATH=/usr/lib/libgomp.so
-
-//Path to the pthread library for OpenMP
-OpenMP_pthread_LIBRARY:FILEPATH=/usr/lib/libpthread.a
-
 //Path to a file.
 OptiX7_INCLUDE_DIR:PATH=/opt/NVIDIA-OptiX-SDK-7.5.0-linux64-x86_64/include
 
-//Path to a library.
-RMQRMM:FILEPATH=/home/cristobal/temporal/RTX-CUDA-template/hrmq/rmqrmmBP.a
-
-//Value Computed by CMake
-RTX-RMQ_BINARY_DIR:STATIC=/home/cristobal/temporal/RTX-CUDA-template/build
-
-//Value Computed by CMake
-RTX-RMQ_IS_TOP_LEVEL:STATIC=ON
-
-//Value Computed by CMake
-RTX-RMQ_SOURCE_DIR:STATIC=/home/cristobal/temporal/RTX-CUDA-template
-
 //The directory containing a CMake configuration file for Thrust.
-Thrust_DIR:PATH=/opt/cuda/lib64/cmake/thrust
+Thrust_DIR:PATH=Thrust_DIR-NOTFOUND
 
 
 ########################
@@ -586,12 +559,6 @@ CMAKE_STRIP-ADVANCED:INTERNAL=1
 CMAKE_UNAME:INTERNAL=/usr/bin/uname
 //ADVANCED property for variable: CMAKE_VERBOSE_MAKEFILE
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
-CUB_VERSION:INTERNAL=1.15.1.0
-CUB_VERSION_COUNT:INTERNAL=4
-CUB_VERSION_MAJOR:INTERNAL=1
-CUB_VERSION_MINOR:INTERNAL=15
-CUB_VERSION_PATCH:INTERNAL=1
-CUB_VERSION_TWEAK:INTERNAL=0
 //ADVANCED property for variable: CUDAToolkit_rt_LIBRARY
 CUDAToolkit_rt_LIBRARY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CUDA_CUDART
@@ -716,54 +683,12 @@ CUDA_nvml_LIBRARY-ADVANCED:INTERNAL=1
 CUDA_nvptxcompiler_static_LIBRARY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CUDA_nvrtc_LIBRARY
 CUDA_nvrtc_LIBRARY-ADVANCED:INTERNAL=1
-//Details about finding CUB
-FIND_PACKAGE_MESSAGE_DETAILS_CUB:INTERNAL=[/opt/cuda/lib64/cmake/cub/cub-config.cmake][v1.15.1.0()]
 //Details about finding CUDAToolkit
 FIND_PACKAGE_MESSAGE_DETAILS_CUDAToolkit:INTERNAL=[/opt/cuda/include][/opt/cuda/lib64/libcudart.so][/opt/cuda/bin][v11.8.89()]
-//Details about finding OpenMP
-FIND_PACKAGE_MESSAGE_DETAILS_OpenMP:INTERNAL=[TRUE][c ][v4.5()]
-//Details about finding OpenMP_CXX
-FIND_PACKAGE_MESSAGE_DETAILS_OpenMP_CXX:INTERNAL=[-fopenmp][/usr/lib/libgomp.so][/usr/lib/libpthread.a][v4.5()]
 //Details about finding OptiX7
 FIND_PACKAGE_MESSAGE_DETAILS_OptiX7:INTERNAL=[/opt/NVIDIA-OptiX-SDK-7.5.0-linux64-x86_64/include][v()]
 //Details about finding Threads
 FIND_PACKAGE_MESSAGE_DETAILS_Threads:INTERNAL=[TRUE][v()]
-//Details about finding Thrust
-FIND_PACKAGE_MESSAGE_DETAILS_Thrust:INTERNAL=[/opt/cuda/lib64/cmake/thrust/thrust-config.cmake][v1.15.1.0()]
-//Result of TRY_COMPILE
-OpenMP_COMPILE_RESULT_CXX_fopenmp:INTERNAL=TRUE
-//ADVANCED property for variable: OpenMP_CXX_FLAGS
-OpenMP_CXX_FLAGS-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: OpenMP_CXX_LIB_NAMES
-OpenMP_CXX_LIB_NAMES-ADVANCED:INTERNAL=1
-//CXX compiler's OpenMP specification date
-OpenMP_CXX_SPEC_DATE:INTERNAL=201511
-//Result of TRY_COMPILE
-OpenMP_SPECTEST_CXX_:INTERNAL=TRUE
-//ADVANCED property for variable: OpenMP_gomp_LIBRARY
-OpenMP_gomp_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: OpenMP_pthread_LIBRARY
-OpenMP_pthread_LIBRARY-ADVANCED:INTERNAL=1
-//CUB version used by Thrust
-THRUST_CUB_VERSION:INTERNAL=1.15.1.0
-//Valid Thrust device systems
-THRUST_DEVICE_SYSTEM_OPTIONS:INTERNAL=CUDA;CPP;OMP;TBB
-//Valid Thrust host systems.
-THRUST_HOST_SYSTEM_OPTIONS:INTERNAL=CPP;OMP;TBB
-THRUST_VERSION:INTERNAL=1.15.1.0
-THRUST_VERSION_COUNT:INTERNAL=4
-THRUST_VERSION_MAJOR:INTERNAL=1
-THRUST_VERSION_MINOR:INTERNAL=15
-THRUST_VERSION_PATCH:INTERNAL=1
-THRUST_VERSION_TWEAK:INTERNAL=0
 //linker supports push/pop state
 _CMAKE_LINKER_PUSHPOP_STATE_SUPPORTED:INTERNAL=TRUE
-//Location of CUB headers.
-_CUB_INCLUDE_DIR:INTERNAL=/opt/cuda/include
-//Path to a file.
-_CUB_VERSION_INCLUDE_DIR:INTERNAL=/opt/cuda/include
-//Location of thrust-config.cmake
-_THRUST_CMAKE_DIR:INTERNAL=/opt/cuda/lib64/cmake/thrust
-//Location of Thrust headers.
-_THRUST_INCLUDE_DIR:INTERNAL=/opt/cuda/include
 

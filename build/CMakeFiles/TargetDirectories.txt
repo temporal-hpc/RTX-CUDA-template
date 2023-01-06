@@ -1,5 +1,0 @@
-/home/cristobal/temporal/RTX-CUDA-template/build/CMakeFiles/rtxcuda.dir
-/home/cristobal/temporal/RTX-CUDA-template/build/CMakeFiles/rtxcuda_copy_ptx.dir
-/home/cristobal/temporal/RTX-CUDA-template/build/CMakeFiles/rtxcuda_rtx_kernels.dir
-/home/cristobal/temporal/RTX-CUDA-template/build/CMakeFiles/edit_cache.dir
-/home/cristobal/temporal/RTX-CUDA-template/build/CMakeFiles/rebuild_cache.dir
