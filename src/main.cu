@@ -22,8 +22,7 @@
 #define ALG_CUB             2
 #define ALG_THRUST          3
 #define ALG_RTX_CLOSEST_HIT 4
-#define ALG_RTX_ANYHIT      5
-const char *algStr[6] = {"", "WARP_SHUFFLE", "CUB", "THRUST", "RTX_CLOSEST_HIT", "RTX_ANYHIT"};
+const char *algStr[6] = {"", "WARP_SHUFFLE", "CUB", "THRUST", "RTX_CLOSEST_HIT"};
 
 #include "common/common.h"
 #include "common/Timer.h"
@@ -68,11 +67,6 @@ int main(int argc, char *argv[]) {
         case ALG_RTX_CLOSEST_HIT:
             rtx(n, 1, steps, alg, p.first, p.second);
             break;
-        /*
-        case ALG_RTX_ANYHIT:
-            rtx(n, k, steps, alg, p.first, p.second);
-            break;
-        */
     }
     printf("Benchmark Finished\n");
     return 0;

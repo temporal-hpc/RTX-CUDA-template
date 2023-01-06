@@ -21,12 +21,7 @@ void rtx(int n, int k, int steps, int alg, float *darray, curandState *devStates
     GASstate state;
     createOptixContext(state);
     loadAppModule(state);
-    if(alg == ALG_RTX_CLOSEST_HIT) {
-	    createGroupsClosestHit(state);
-    }
-    else if(alg == ALG_RTX_ANYHIT){
-	    createGroupsAnyHit(state);
-    }
+	createGroupsClosestHit(state);
     createPipeline(state);
     populateSBT(state);
     timer.stop();

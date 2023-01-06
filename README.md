@@ -16,7 +16,23 @@ The sample code simulates `n` randomly generated numbers, by shifting their valu
 ## Compile and run
 ```
 mkdir build && cd build
-cmake ../ -DOPTIX_HOME=<PATH-TO-OPTIX-MAIN-DIR>
+cmake ../ -DOPTIX_HOME=<PATH-TO-OPTIX-MAIN-DIR> -DThrust_DIR=<PATH-TO-THRUST-CMAKE-CONFIG> -DCUB_DIR=<PATH-TO-CUB-CMAKE-CONFIG>
 make
-./rtx-cuda <dev> <n> <s> <alg>
+./rtxcuda <dev> <n> <s> <alg>
+dev = device ID
+n   = problem size
+s   = number of simulation steps
+alg = algorithm
+   1 -> WARP_SHUFFLE
+   2 -> CUB
+   3 -> THRUST
+   4 -> RTX_CLOSEST_HIT
 ```
+## Example compilation
+```
+>> cmake ../ -DOPTIX_HOME=~/NVIDIA-OptiX-SDK-7.5.0-linux64-x86_64 -DThrust_DIR=/opt/cuda/targets/x86_64-linux/lib/cmake/thrust -DCUB_DIR=/opt/cuda/targets/x86_64-linux/lib/cmake/cub
+>> make
+```
+
+## Example execution
+`./rtxcuda 0 $((2**20)) 1 4`
