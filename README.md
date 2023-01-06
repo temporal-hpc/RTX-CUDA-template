@@ -1,7 +1,7 @@
 # RTX-CUDA-template
 A simple RTX-CUDA interoperability test program based on the SAXPY example from NVIDIA's RTX Compute Samples https://github.com/NVIDIA/rtx_compute_samples
 
-The sample code simulates `n` randomly generated numbers, by shifting their value (as if was a 1D coordinate) by a random translation, and computes the minimum value at each time step. The user can choose different approaches
+The sample code simulates `n` randomly generated numbers, by shifting their value (as if was a 1D coordinate) by a random translation, and computes the minimum value at each time step. The user can choose one of the following approaches for computing such minimum value in GPU:
 - CUDA Kernel
 - CUB
 - Thrust
