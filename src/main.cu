@@ -31,6 +31,7 @@ const char *algStr[6] = {"", "WARP_SHUFFLE", "CUB", "THRUST", "RTX_CLOSEST_HIT"}
 #include "src/device_tools.cuh"
 #include "src/device_simulation.cuh"
 #include "src/cuda_methods.cuh"
+#include "rtx_params.h"
 #include "src/rtx_functions.h"
 #include "src/rtx.h"
 

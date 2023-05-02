@@ -11,14 +11,6 @@ std::string loadPtx(std::string filename) {
   return std::string((std::istreambuf_iterator<char>(ptx_in)), std::istreambuf_iterator<char>());
 }
 
-struct Params {
-  OptixTraversableHandle handle;
-  float *output;
-  unsigned int k;
-  float min;
-  float max;
-};
-
 struct GASstate {
   OptixDeviceContext context = 0;
 
