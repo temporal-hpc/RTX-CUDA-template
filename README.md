@@ -8,8 +8,9 @@ The sample code simulates `n` randomly generated numbers, by shifting their valu
 - RTX OptiX 
 
 ## Dependencies
-- CUDA 11 or later
-- OptiX 7.5 or later
+- CUDA 12 or later
+- OptiX 7.7 or later
+- Nvidia driver 530.41 or later
 - CUB (for comparison)
 - THrust (for comparison)
 
@@ -30,7 +31,7 @@ alg = algorithm
 ```
 ## Example compilation
 ```
->> cmake ../ -DOPTIX_HOME=~/NVIDIA-OptiX-SDK-7.5.0-linux64-x86_64 -DThrust_DIR=/opt/cuda/targets/x86_64-linux/lib/cmake/thrust -DCUB_DIR=/opt/cuda/targets/x86_64-linux/lib/cmake/cub
+>> cmake ../ -DOPTIX_HOME=~/NVIDIA-OptiX-SDK-7.7.0-linux64-x86_64 -DThrust_DIR=/opt/cuda/targets/x86_64-linux/lib/cmake/thrust -DCUB_DIR=/opt/cuda/targets/x86_64-linux/lib/cmake/cub
 >> make
 ```
 
