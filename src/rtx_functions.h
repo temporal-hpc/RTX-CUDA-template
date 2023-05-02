@@ -67,7 +67,7 @@ void loadAppModule(GASstate &state) {
   state.pipeline_compile_options.exceptionFlags = OPTIX_EXCEPTION_FLAG_NONE;
   state.pipeline_compile_options.pipelineLaunchParamsVariableName = "params";
 
-  OPTIX_CHECK(optixModuleCreateFromPTX(state.context, &module_compile_options,
+  OPTIX_CHECK(optixModuleCreate(state.context, &module_compile_options,
                                        &state.pipeline_compile_options, ptx.c_str(),
                                        ptx.size(), nullptr, nullptr, &state.ptx_module));
 }
@@ -127,7 +127,6 @@ void createGroupsAnyHit(GASstate &state) {
 void createPipeline(GASstate &state) {
   OptixPipelineLinkOptions pipeline_link_options = {};
   pipeline_link_options.maxTraceDepth = 1;
-  pipeline_link_options.debugLevel = OPTIX_COMPILE_DEBUG_LEVEL_FULL;
   OPTIX_CHECK(optixPipelineCreate(state.context, &state.pipeline_compile_options, &pipeline_link_options, state.program_groups, 3, nullptr, nullptr, &state.pipeline));
 }
 
