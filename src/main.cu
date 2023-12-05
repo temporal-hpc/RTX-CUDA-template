@@ -43,12 +43,14 @@ int main(int argc, char *argv[]) {
     if(!check_parameters(argc)){
         exit(EXIT_FAILURE);
     }
-    int dev = atoi(argv[1]);
-    int n = atoi(argv[2]);
+
+    CmdArgs args = get_args(argc, argv);
+    int dev = args.dev;
+    int n = args.n;
     //int k = atoi(argv[3]);
-    int steps = atoi(argv[3]);
-    int alg = atoi(argv[4]);
-    printf("Params: dev=%i  n=%i  steps=%i  alg=%s (BSIZE=%i)\n\n", dev, n, steps, algStr[alg], BSIZE);
+    int steps = args.steps;
+    int alg = args.alg;
+
     cudaSetDevice(dev);
     print_gpu_specs(dev);
     // 1) data on GPU, result has the resulting array and the states array
