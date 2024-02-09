@@ -31,6 +31,7 @@ const char *algStr[6] = {"", "WARP_SHUFFLE", "CUB", "THRUST", "RTX_CLOSEST_HIT"}
 #include "src/device_tools.cuh"
 #include "src/device_simulation.cuh"
 #include "src/cuda_methods.cuh"
+#include "rtx_params.h"
 #include "src/rtx_functions.h"
 #include "src/rtx.h"
 
@@ -42,30 +43,35 @@ int main(int argc, char *argv[]) {
     if(!check_parameters(argc)){
         exit(EXIT_FAILURE);
     }
-    int dev = atoi(argv[1]);
-    int n = atoi(argv[2]);
+
+    CmdArgs args = get_args(argc, argv);
+    int dev = args.dev;
+    int n = args.n;
     //int k = atoi(argv[3]);
-    int steps = atoi(argv[3]);
-    int alg = atoi(argv[4]);
-    printf("Params: dev=%i  n=%i  steps=%i  alg=%s (BSIZE=%i)\n\n", dev, n, steps, algStr[alg], BSIZE);
+    int steps = args.steps;
+    int alg = args.alg;
+    int seed = 1123;
+
     cudaSetDevice(dev);
     print_gpu_specs(dev);
     // 1) data on GPU, result has the resulting array and the states array
-    std::pair<float*, curandState*> p = create_random_array_dev(n, 1123);
+    curandState* devStates = setup_curand(n, seed);
+    float* d_array = create_random_array_dev<float>(n, 100.0, devStates);
+
 
     // 2) computation
     switch(alg){
         case ALG_WARP_SHUFFLE:
-            cudaWarpShuffle(n, steps, p.first, p.second);
+            cudaWarpShuffle(n, steps, d_array, devStates);
             break;
         case ALG_CUB:
-            cudaCUB(n, steps, p.first, p.second);
+            cudaCUB(n, steps, d_array, devStates);
             break;
         case ALG_THRUST:
-            cudaThrust(n, steps, p.first, p.second);
+            cudaThrust(n, steps, d_array, devStates);
             break;
         case ALG_RTX_CLOSEST_HIT:
-            rtx(n, 1, steps, alg, p.first, p.second);
+            rtx(n, 1, steps, alg, d_array, devStates);
             break;
     }
     printf("Benchmark Finished\n");
