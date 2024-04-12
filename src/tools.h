@@ -29,7 +29,7 @@ struct Results {
 };
 
 void print_help(){
-    fprintf(stderr, AC_BOLDGREEN "run as ./rtxcuda <dev> <n> <s> <alg>\n" AC_RESET
+    fprintf(stderr, AC_BOLDGREEN "run as ./rtxcuda <n> <s> <alg>\n" AC_RESET
                     "n   = problem size\n"
                     "s   = number of simulation steps\n"
                     "alg = algorithm\n"

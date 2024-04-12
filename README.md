@@ -19,7 +19,7 @@ The sample code simulates `n` randomly generated numbers, by shifting their valu
 mkdir build && cd build
 cmake ../ -DOPTIX_HOME=<PATH-TO-OPTIX-MAIN-DIR> -DThrust_DIR=<PATH-TO-THRUST-CMAKE-CONFIG> -DCUB_DIR=<PATH-TO-CUB-CMAKE-CONFIG>
 make
-./rtxcuda <dev> <n> <s> <alg>
+./rtxcuda <n> <s> <alg>
 dev = device ID
 n   = problem size
 s   = number of simulation steps
