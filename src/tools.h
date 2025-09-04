@@ -156,18 +156,30 @@ bool check_parameters(int argc){
 }
 
 
-
-void print_gpu_specs(int dev){
+void print_gpu_specs(int dev) {
     cudaDeviceProp prop;
     cudaGetDeviceProperties(&prop, dev);
+
+    // Use cudaDeviceGetAttribute to get deprecated properties
+    int memoryClockRateKhz, memoryBusWidthBits;
+    cudaDeviceGetAttribute(&memoryClockRateKhz, cudaDevAttrMemoryClockRate, dev);
+    cudaDeviceGetAttribute(&memoryBusWidthBits, cudaDevAttrGlobalMemoryBusWidth, dev);
+
     printf("Device Number: %d\n", dev);
     printf("  Device name:                  %s\n", prop.name);
     printf("  Multiprocessor Count:         %d\n", prop.multiProcessorCount);
     printf("  Concurrent Kernels:           %d\n", prop.concurrentKernels);
-    printf("  Memory Clock Rate (MHz):      %d\n", prop.memoryClockRate);
-    printf("  Memory Bus Width (bits):      %d\n", prop.memoryBusWidth);
-    printf("  Peak Memory Bandwidth (GB/s): %f\n\n", 2.0*prop.memoryClockRate*(prop.memoryBusWidth/8)/1.0e6);
+
+    // Print the memory clock rate, converting kHz to MHz
+    printf("  Memory Clock Rate (MHz):      %d\n", memoryClockRateKhz / 1000);
+    // Print the memory bus width
+    printf("  Memory Bus Width (bits):      %d\n", memoryBusWidthBits);
+
+    // Calculate and print the peak memory bandwidth
+    double peak_bandwidth = 2.0 * memoryClockRateKhz * memoryBusWidthBits / 8.0 / 1.0e6;
+    printf("  Peak Memory Bandwidth (GB/s): %f\n\n", peak_bandwidth);
 }
+
 
 void write_results(CmdArgs args, Results results) {
     if (!args.save_time) return;

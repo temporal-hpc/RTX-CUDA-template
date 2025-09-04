@@ -9,8 +9,8 @@ endif(NOT CMAKE_BUILD_TYPE)
 # add path to our CMake modules
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake")
 
-# turn on C++14
-set(CMAKE_CXX_STANDARD 14)
+# turn on C++17
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # for common headers
