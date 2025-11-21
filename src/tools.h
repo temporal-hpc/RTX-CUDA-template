@@ -168,30 +168,28 @@ bool check_parameters(int argc, char **argv){
     return true;
 }
 
-void print_gpu_specs(int dev){
+void print_gpu_specs(int dev) {
     cudaDeviceProp prop;
     cudaGetDeviceProperties(&prop, dev);
+
+    // Use cudaDeviceGetAttribute to get deprecated properties
+    int memoryClockRateKhz, memoryBusWidthBits;
+    cudaDeviceGetAttribute(&memoryClockRateKhz, cudaDevAttrMemoryClockRate, dev);
+    cudaDeviceGetAttribute(&memoryBusWidthBits, cudaDevAttrGlobalMemoryBusWidth, dev);
 
     printf("Device Number: %d\n", dev);
     printf("  Device name:                  %s\n", prop.name);
     printf("  Multiprocessor Count:         %d\n", prop.multiProcessorCount);
     printf("  Concurrent Kernels:           %d\n", prop.concurrentKernels);
 
-    int memClockKHz = 0;
-    int memBusWidth = 0;
+    // Print the memory clock rate, converting kHz to MHz
+    printf("  Memory Clock Rate (MHz):      %d\n", memoryClockRateKhz / 1000);
+    // Print the memory bus width
+    printf("  Memory Bus Width (bits):      %d\n", memoryBusWidthBits);
 
-    // New API to get memory clock and bus width
-    cudaDeviceGetAttribute(&memClockKHz, cudaDevAttrMemoryClockRate, dev);  // in KHz
-    cudaDeviceGetAttribute(&memBusWidth, cudaDevAttrGlobalMemoryBusWidth, dev); // in bits
-
-    printf("  Memory Clock Rate (MHz):      %.2f\n", memClockKHz / 1000.0);
-    printf("  Memory Bus Width (bits):      %d\n", memBusWidth);
-
-    // Peak bandwidth:
-    // NVIDIA documents the formula as:
-    // bandwidth = 2 * memClock(Hz) * (busWidth/8) / 1e9   [GB/s]
-    double bw = 2.0 * (memClockKHz * 1000.0) * (memBusWidth / 8.0) / 1e9;
-    printf("  Peak Memory Bandwidth (GB/s): %.2f\n\n", bw);
+    // Calculate and print the peak memory bandwidth
+    double peak_bandwidth = 2.0 * memoryClockRateKhz * memoryBusWidthBits / 8.0 / 1.0e6;
+    printf("  Peak Memory Bandwidth (GB/s): %f\n\n", peak_bandwidth);
 }
 
 
