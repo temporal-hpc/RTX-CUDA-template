@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #define PRINT_LIMIT 32
 __global__ void kernel_print_array_dev(int n, float *darray){
     int tid = threadIdx.x + blockIdx.x * blockDim.x;
@@ -64,8 +65,15 @@ __global__ void kernel_gen_triangles(int ntris, float *array, uint3 *triangles){
 
 float3* gen_vertices_dev(int ntris, float *darray){
     // vertices data
-    float3 *devVertices;
-    cudaMalloc(&devVertices, sizeof(float3)*3*ntris);
+    float3 *devVertices = nullptr;
+    auto alloc_status = cudaMalloc(&devVertices, sizeof(float3) * 3 * ntris);
+    if (alloc_status != cudaSuccess) {
+        std::cerr << __FILE__ << ":" << __LINE__
+                  << " CUDA Error: '" << cudaGetErrorString(alloc_status)
+                  << "' while allocating vertices (" << (3LL * ntris)
+                  << " elements)\n";
+        return nullptr;
+    }
 
     // setup states
     dim3 block(BSIZE, 1, 1);
@@ -78,8 +86,15 @@ float3* gen_vertices_dev(int ntris, float *darray){
 
 uint3* gen_triangles_dev(int ntris, float *darray){
     // data array
-    uint3 *devTriangles;
-    cudaMalloc(&devTriangles, sizeof(uint3)*ntris);
+    uint3 *devTriangles = nullptr;
+    auto alloc_status = cudaMalloc(&devTriangles, sizeof(uint3) * ntris);
+    if (alloc_status != cudaSuccess) {
+        std::cerr << __FILE__ << ":" << __LINE__
+                  << " CUDA Error: '" << cudaGetErrorString(alloc_status)
+                  << "' while allocating triangles (" << ntris
+                  << " elements)\n";
+        return nullptr;
+    }
 
     // setup states
     dim3 block(BSIZE, 1, 1);
