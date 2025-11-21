@@ -9,6 +9,12 @@ void rtx(int n, int k, int steps, int alg, float *darray, curandState *devStates
     timer.restart();
     float3* devVertices = gen_vertices_dev(n, darray);
     uint3 *devTriangles = gen_triangles_dev(n, darray);
+    if (devVertices == nullptr || devTriangles == nullptr) {
+        printf("failed\n");
+        printf("Insufficient device memory for OptiX geometry (requested %lld vertices, %d triangles).\n",
+               3LL * n, n);
+        return;
+    }
     //print_array_dev(n, p.first);
     //print_vertices_dev(n, devVertices);
     timer.stop();
