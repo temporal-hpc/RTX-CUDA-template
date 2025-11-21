@@ -54,13 +54,8 @@ void print_help(){
                     algStr[5]);
 }
 
-#define NUM_REQUIRED_ARGS 4
+#define NUM_REQUIRED_POS_ARGS 3
 CmdArgs get_args(int argc, char *argv[]) {
-    if (argc < NUM_REQUIRED_ARGS) {
-        print_help();
-        exit(EXIT_FAILURE);
-    }
-
     CmdArgs args;
     args.n = atoi(argv[1]);
     args.steps = atoi(argv[2]);
@@ -146,28 +141,59 @@ bool is_equal(float a, float b) {
     return abs(a - b) < epsilon;
 }
 
-bool check_parameters(int argc){
-    if(argc != NUM_REQUIRED_ARGS){
-        fprintf(stderr, AC_YELLOW "missing arguments\n" AC_RESET);
+bool check_parameters(int argc, char **argv){
+    int posargs = 0;
+
+    for (int i = 1; i < argc; i++) {
+
+        // If it begins with '-', it's an option, skip it
+        if (argv[i][0] == '-') {
+
+            // If the option expects a value (e.g. --opt VALUE)
+            if (i + 1 < argc && argv[i+1][0] != '-') {
+                i++; // skip the value
+            }
+
+            continue;
+        }
+
+        // Otherwise it's a positional argument
+        posargs++;
+    }
+    if(posargs != NUM_REQUIRED_POS_ARGS){
+        fprintf(stderr, AC_YELLOW "missing arguments (%i != %i)\n" AC_RESET, posargs, NUM_REQUIRED_POS_ARGS);
         print_help();
         return false;
     }
     return true;
 }
 
-
-
 void print_gpu_specs(int dev){
     cudaDeviceProp prop;
     cudaGetDeviceProperties(&prop, dev);
+
     printf("Device Number: %d\n", dev);
     printf("  Device name:                  %s\n", prop.name);
     printf("  Multiprocessor Count:         %d\n", prop.multiProcessorCount);
     printf("  Concurrent Kernels:           %d\n", prop.concurrentKernels);
-    printf("  Memory Clock Rate (MHz):      %d\n", prop.memoryClockRate);
-    printf("  Memory Bus Width (bits):      %d\n", prop.memoryBusWidth);
-    printf("  Peak Memory Bandwidth (GB/s): %f\n\n", 2.0*prop.memoryClockRate*(prop.memoryBusWidth/8)/1.0e6);
+
+    int memClockKHz = 0;
+    int memBusWidth = 0;
+
+    // New API to get memory clock and bus width
+    cudaDeviceGetAttribute(&memClockKHz, cudaDevAttrMemoryClockRate, dev);  // in KHz
+    cudaDeviceGetAttribute(&memBusWidth, cudaDevAttrGlobalMemoryBusWidth, dev); // in bits
+
+    printf("  Memory Clock Rate (MHz):      %.2f\n", memClockKHz / 1000.0);
+    printf("  Memory Bus Width (bits):      %d\n", memBusWidth);
+
+    // Peak bandwidth:
+    // NVIDIA documents the formula as:
+    // bandwidth = 2 * memClock(Hz) * (busWidth/8) / 1e9   [GB/s]
+    double bw = 2.0 * (memClockKHz * 1000.0) * (memBusWidth / 8.0) / 1e9;
+    printf("  Peak Memory Bandwidth (GB/s): %.2f\n\n", bw);
 }
+
 
 void write_results(CmdArgs args, Results results) {
     if (!args.save_time) return;
@@ -179,7 +205,7 @@ void write_results(CmdArgs args, Results results) {
 
     cudaDeviceProp prop;
     cudaGetDeviceProperties(&prop, args.dev);
-    char *device = prop.name;
+    //char *device = prop.name;
     //if (alg == ALG_CPU_BASE || alg == ALG_CPU_HRMQ) {
     //    strcpy(device, "CPU ");
     //    char hostname[50];

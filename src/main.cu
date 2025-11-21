@@ -40,7 +40,7 @@ int main(int argc, char *argv[]) {
     printf("----------------------------------\n");
     printf("  RTX-CUDA Template by Temporal   \n");
     printf("----------------------------------\n");
-    if(!check_parameters(argc)){
+    if(!check_parameters(argc, argv)){
         exit(EXIT_FAILURE);
     }
 
